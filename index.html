@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yusuf Silvianus Sapojai — Portfolio</title>
+<meta name="description" content="Portfolio of Yusuf Silvianus Sapojai — Informatics Student, Laravel/PHP Developer, School Operator.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0b0d;
+    --panel:#141418;
+    --line:#26262c;
+    --text:#f2f0eb;
+    --muted:#8d8b86;
+    --accent:#ff6a2b;      /* warna aksen — ganti sesuka hati */
+    --display:'Anton', Impact, sans-serif;
+    --body:'Manrope', system-ui, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--body);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+
+  /* ---------- grain + vignette ---------- */
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;
+    background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.55) 100%);}
+
+  /* ---------- slide ---------- */
+  .slide{min-height:100vh;min-height:100svh;scroll-snap-align:start;position:relative;
+    display:flex;align-items:center;padding:90px 7vw 70px;overflow:hidden}
+  .slide .inner{width:100%;max-width:1200px;margin:0 auto;
+    opacity:0;filter:blur(18px);transform:scale(1.04);
+    transition:opacity .9s ease,filter .9s ease,transform 1.1s cubic-bezier(.2,.7,.2,1)}
+  .slide.active .inner{opacity:1;filter:blur(0);transform:none}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+  .slide.active .reveal{opacity:1;transform:none}
+  .slide.active .reveal:nth-child(2){transition-delay:.15s}
+  .slide.active .reveal:nth-child(3){transition-delay:.3s}
+  .slide.active .reveal:nth-child(4){transition-delay:.45s}
+
+  .tag{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:12px}
+  .tag::before{content:"";width:34px;height:2px;background:var(--accent)}
+  h2.title{font-family:var(--display);font-weight:400;font-size:clamp(44px,7vw,96px);line-height:.95;text-transform:uppercase;letter-spacing:.01em;margin-bottom:34px}
+  p.lead{color:var(--muted);font-size:clamp(15px,1.3vw,18px);line-height:1.75;max-width:620px}
+
+  /* ---------- top bar ---------- */
+  .topbar{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:center;padding:22px 7vw;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);mix-blend-mode:difference}
+  .topbar b{color:var(--text);font-weight:700}
+  .counter{font-variant-numeric:tabular-nums}
+  .counter b{color:var(--accent)}
+
+  /* ---------- side dots ---------- */
+  .dots{position:fixed;right:2.2vw;top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:14px}
+  .dots a{width:8px;height:8px;border-radius:50%;background:#3a3a40;transition:.3s}
+  .dots a.on{background:var(--accent);transform:scale(1.5)}
+
+  /* ---------- photo ---------- */
+  .photo{position:relative;aspect-ratio:4/5;border-radius:6px;overflow:hidden;background:linear-gradient(160deg,#25252b,#121215);border:1px solid var(--line)}
+  .photo img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(.15) contrast(1.05)}
+  .photo .initials{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-family:var(--display);font-size:120px;color:#2f2f36}
+  .photo.noimg .initials{display:flex}
+  .photo.noimg img{display:none}
+  .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(11,11,13,.7),transparent 45%)}
+
+  /* ---------- 01 cover ---------- */
+  .cover .inner{display:grid;grid-template-columns:1fr;place-items:center;text-align:center}
+  .cover .big{font-family:var(--display);font-size:clamp(84px,17vw,280px);line-height:.82;letter-spacing:-.01em;text-transform:uppercase;position:relative;white-space:nowrap;display:inline-block}
+  .cover .big span{color:transparent;-webkit-text-stroke:2px var(--text)}
+  .cover .name{margin-top:28px;font-size:13px;letter-spacing:.45em;text-transform:uppercase;color:var(--muted)}
+  .cover .name b{color:var(--text)}
+  .cover .year{position:absolute;bottom:40px;left:7vw;font-size:12px;letter-spacing:.2em;color:var(--muted)}
+  .scrollhint{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:10px}
+  .scrollhint i{width:1px;height:40px;background:linear-gradient(var(--accent),transparent);animation:drip 1.8s infinite}
+  @keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+  /* ---------- 02 profile ---------- */
+  .profile .inner{display:grid;grid-template-columns:minmax(240px,380px) 1fr;gap:6vw;align-items:center}
+  .profile h2.title{font-size:clamp(48px,7.5vw,110px)}
+  .profile h2.title em{font-style:normal;color:var(--accent)}
+  .facts{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+  .facts span{border:1px solid var(--line);padding:8px 14px;border-radius:40px;font-size:13px;color:var(--text);background:var(--panel)}
+
+  /* ---------- 03 journey ---------- */
+  .journey .inner{display:grid;grid-template-columns:1fr 1fr;gap:5vw}
+  .timeline{border-left:1px solid var(--line);padding-left:30px;display:flex;flex-direction:column;gap:30px}
+  .tl{position:relative}
+  .tl::before{content:"";position:absolute;left:-35px;top:6px;width:9px;height:9px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+  .tl small{color:var(--accent);font-weight:700;font-size:12px;letter-spacing:.15em}
+  .tl h3{font-size:20px;margin:6px 0 4px;font-weight:700}
+  .tl p{color:var(--muted);font-size:14px;line-height:1.6}
+  .coltitle{font-family:var(--display);font-size:28px;text-transform:uppercase;margin-bottom:26px;letter-spacing:.03em}
+
+  /* ---------- 04 skills ---------- */
+  .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .skill-card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:28px;transition:border-color .3s,transform .3s}
+  .skill-card:hover{border-color:var(--accent);transform:translateY(-4px)}
+  .skill-card h3{font-family:var(--display);font-weight:400;font-size:26px;text-transform:uppercase;margin-bottom:16px;letter-spacing:.03em}
+  .skill-card ul{list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+  .skill-card li{font-size:13px;padding:6px 12px;border-radius:4px;background:#1d1d22;color:#cfcdc7}
+  .skill-icons{margin-top:30px;display:flex;justify-content:flex-start}
+  .skill-icons img{height:44px;max-width:100%}
+
+  /* ---------- 05 numbers ---------- */
+  .numbers{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
+  .num{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:38px 26px}
+  .num b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(54px,7vw,96px);line-height:1;color:var(--text)}
+  .num b sup{color:var(--accent);font-size:.45em;vertical-align:top;margin-left:4px}
+  .num span{display:block;margin-top:14px;color:var(--muted);font-size:13px;letter-spacing:.12em;text-transform:uppercase;line-height:1.5}
+
+  /* ---------- 06 projects ---------- */
+  .projects-list{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+  .proj{display:grid;grid-template-columns:70px 1fr auto;gap:24px;align-items:center;padding:30px 0;border-bottom:1px solid var(--line);transition:padding .3s,background .3s}
+  .proj:hover{padding-left:18px;background:linear-gradient(90deg,rgba(255,106,43,.07),transparent)}
+  .proj .no{font-family:var(--display);font-size:34px;color:#3a3a40}
+  .proj:hover .no{color:var(--accent)}
+  .proj h3{font-size:clamp(20px,2.2vw,28px);font-weight:700;margin-bottom:6px}
+  .proj p{color:var(--muted);font-size:14px;line-height:1.6;max-width:640px}
+  .proj .stack{margin-top:10px;font-size:12px;color:var(--accent);letter-spacing:.08em}
+  .proj .go{width:52px;height:52px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:20px;transition:.3s}
+  .proj:hover .go{background:var(--accent);border-color:var(--accent);color:#111;transform:rotate(-45deg)}
+
+  /* ---------- 07 services ---------- */
+  .services{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .svc{border:1px solid var(--line);border-radius:6px;padding:32px 28px;background:var(--panel);position:relative;overflow:hidden}
+  .svc::before{content:attr(data-n);position:absolute;right:18px;top:6px;font-family:var(--display);font-size:80px;color:#1d1d22}
+  .svc h3{position:relative;font-family:var(--display);font-weight:400;font-size:28px;text-transform:uppercase;margin-bottom:14px;line-height:1.05}
+  .svc p{position:relative;color:var(--muted);font-size:14px;line-height:1.7}
+
+  /* ---------- 08 contact ---------- */
+  .contact .inner{display:grid;grid-template-columns:1.2fr 1fr;gap:6vw;align-items:center}
+  .contact h2.title{font-size:clamp(54px,9vw,140px)}
+  .contact h2.title span{color:var(--accent)}
+  .links{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .links a{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:18px 20px;border:1px solid var(--line);border-radius:6px;background:var(--panel);font-weight:600;font-size:14px;transition:.25s}
+  .links a small{display:block;color:var(--muted);font-weight:500;font-size:12px;margin-top:2px}
+  .links a:hover{border-color:var(--accent);background:#1b1612}
+  .links a i{font-style:normal;color:var(--accent);font-size:18px}
+  .loc{margin-top:22px;color:var(--muted);font-size:14px;display:flex;align-items:center;gap:8px}
+  .loc::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(255,106,43,.2)}
+  footer{position:absolute;bottom:26px;left:7vw;right:7vw;display:flex;justify-content:space-between;font-size:12px;color:var(--muted);letter-spacing:.1em}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:900px){
+    html{scroll-snap-type:none}
+    .slide{padding:100px 22px 70px;min-height:auto;flex-direction:column;justify-content:center}
+    .cover{min-height:100svh}
+    .cover .big{font-size:27vw;line-height:.85}
+    .cover .big span{display:block;-webkit-text-stroke:1.5px var(--text)}
+    .cover .name{letter-spacing:.2em;font-size:11px}
+    .topbar{padding:20px 22px}
+    .dots{display:none}
+    .profile .inner,.journey .inner,.contact .inner{grid-template-columns:1fr;gap:40px}
+    .profile .photo{max-width:300px}
+    .skills-grid,.services{grid-template-columns:1fr}
+    .numbers{grid-template-columns:1fr 1fr}
+    .num{padding:26px 18px}
+    .proj{grid-template-columns:44px 1fr;gap:14px}
+    .proj .go{display:none}
+    .links{grid-template-columns:1fr}
+    footer{position:static;margin-top:50px;flex-direction:column;gap:6px}
+    .contact{padding-bottom:30px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .slide .inner,.reveal{transition:none;opacity:1;filter:none;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div><b>Y.S. Sapojai</b> &nbsp;/&nbsp; Portfolio</div>
+  <div class="counter"><b id="cur">01</b> / <span id="total">08</span></div>
+</div>
+<nav class="dots" id="dots"></nav>
+
+<!-- ===================== 01 COVER ===================== -->
+<section class="slide cover" id="home">
+  <div class="inner">
+    <div class="big">Port<span>folio</span></div>
+    <div class="name">by <b>Yusuf Silvianus Sapojai</b></div>
+  </div>
+  <div class="year">© 2026</div>
+  <div class="scrollhint">Scroll<i></i></div>
+</section>
+
+<!-- ===================== 02 PROFILE ===================== -->
+<section class="slide profile" id="about">
+  <div class="inner">
+    <!-- FOTO: simpan foto kamu dengan nama foto.jpg di folder yang sama dengan file ini -->
+    <div class="photo reveal" id="photo">
+      <img src="foto.jpg" alt="Yusuf Silvianus Sapojai" onerror="this.parentElement.classList.add('noimg')">
+      <div class="initials">YS</div>
+    </div>
+    <div>
+      <div class="tag reveal">About Me</div>
+      <h2 class="title reveal">Yusuf<br><em>Sapojai</em></h2>
+      <p class="lead reveal">
+        Informatics student and self-taught web developer focused on <b style="color:var(--text)">Laravel / PHP</b>.
+        Since 2022 I have worked as a school administration staff &amp; operator, so I build software
+        with real administrative problems in mind — data, reports, and workflows that people actually use every day.
+      </p>
+      <div class="facts reveal">
+        <span>Laravel / PHP Developer</span>
+        <span>School Operator</span>
+        <span>Graphic Design</span>
+        <span>Jakarta, ID</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 03 JOURNEY ===================== -->
+<section class="slide journey" id="journey">
+  <div class="inner">
+    <div>
+      <div class="tag reveal">Journey</div>
+      <h2 class="title reveal">Education</h2>
+      <div class="timeline reveal">
+        <div class="tl">
+          <small>2022 — 2026</small>
+          <h3>STIMIK Masa Depan</h3>
+          <p>Bachelor of Informatics Engineering. Thesis: web-based SPP payment monitoring system with WhatsApp automation.</p>
+        </div>
+        <div class="tl">
+          <small>2019 — 2022</small>
+          <h3>SMK Media Informatika</h3>
+          <p>Vocational high school, informatics program.</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="tag reveal" style="visibility:hidden">.</div>
+      <h2 class="title reveal">Experience</h2>
+      <div class="timeline reveal">
+        <div class="tl">
+          <small>2022 — NOW</small>
+          <h3>School Admin Staff &amp; Operator</h3>
+          <p>Managing Dapodik student data, e-Raport, grade transcripts, and official documents across TK, SD, SMP, SMA and SMK levels.</p>
+        </div>
+        <div class="tl">
+          <small>FREELANCE</small>
+          <h3>Web Developer &amp; Designer</h3>
+          <p>Building websites and designing banners, brochures, certificates and social media content for clients.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 04 SKILLS ===================== -->
+<section class="slide" id="skills">
+  <div class="inner">
+    <div class="tag reveal">Skills</div>
+    <h2 class="title reveal">What I Work With</h2>
+    <div class="skills-grid reveal">
+      <div class="skill-card">
+        <h3>Development</h3>
+        <ul><li>PHP</li><li>Laravel</li><li>MySQL</li><li>HTML</li><li>CSS</li><li>JavaScript</li><li>Bootstrap</li><li>Git &amp; GitHub</li></ul>
+      </div>
+      <div class="skill-card">
+        <h3>Design</h3>
+        <ul><li>Canva</li><li>Photoshop</li><li>Banner &amp; Brochure</li><li>Social Media Content</li><li>Certificates</li></ul>
+      </div>
+      <div class="skill-card">
+        <h3>Administration</h3>
+        <ul><li>Dapodik</li><li>e-Raport</li><li>Data Management</li><li>Official Documents</li><li>Microsoft Office</li></ul>
+      </div>
+    </div>
+    <div class="skill-icons reveal">
+      <img src="https://skillicons.dev/icons?i=php,laravel,mysql,html,css,js,bootstrap,git,github,vscode,ps&theme=dark" alt="Tech stack icons">
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 05 NUMBERS ===================== -->
+<section class="slide" id="numbers">
+  <div class="inner">
+    <div class="tag reveal">Overview</div>
+    <h2 class="title reveal">In Numbers</h2>
+    <!-- Angka di bawah bisa kamu sesuaikan -->
+    <div class="numbers reveal">
+      <div class="num"><b data-count="4">0<sup>+</sup></b><span>Years in school<br>administration</span></div>
+      <div class="num"><b data-count="5">0</b><span>School levels<br>managed (TK–SMK)</span></div>
+      <div class="num"><b data-count="2">0<sup>+</sup></b><span>Web projects<br>built</span></div>
+      <div class="num"><b data-count="20">0<sup>+</sup></b><span>Design works<br>created</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 06 PROJECTS ===================== -->
+<section class="slide" id="projects">
+  <div class="inner">
+    <div class="tag reveal">Selected Work</div>
+    <h2 class="title reveal">Projects</h2>
+    <div class="projects-list reveal">
+      <a class="proj" href="https://github.com/S4pojai" target="_blank" rel="noopener">
+        <div class="no">01</div>
+        <div>
+          <h3>SPP Payment Monitoring System</h3>
+          <p>Web application to record and monitor school tuition payments, with automatic WhatsApp reminders sent to parents.</p>
+          <div class="stack">LARAVEL · MYSQL · WHATSAPP API</div>
+        </div>
+        <div class="go">→</div>
+      </a>
+      <a class="proj" href="https://github.com/S4pojai/uas-cyberpreneurship" target="_blank" rel="noopener">
+        <div class="no">02</div>
+        <div>
+          <h3>UMKM Business Website</h3>
+          <p>Responsive website for a small business, built for the Cyberpreneurship course final project.</p>
+          <div class="stack">HTML · CSS · BOOTSTRAP</div>
+        </div>
+        <div class="go">→</div>
+      </a>
+      <a class="proj" href="#home">
+        <div class="no">03</div>
+        <div>
+          <h3>This Portfolio</h3>
+          <p>Presentation-style personal portfolio with full-screen slides and blur transitions, hosted on GitHub Pages.</p>
+          <div class="stack">HTML · CSS · JAVASCRIPT</div>
+        </div>
+        <div class="go">→</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 07 SERVICES ===================== -->
+<section class="slide" id="services">
+  <div class="inner">
+    <div class="tag reveal">Services</div>
+    <h2 class="title reveal">How I Can Help</h2>
+    <div class="services reveal">
+      <div class="svc" data-n="01">
+        <h3>Portfolio<br>Website</h3>
+        <p>A personal portfolio like this one — designed for you, filled with your data, and online on GitHub Pages.</p>
+      </div>
+      <div class="svc" data-n="02">
+        <h3>Admin &amp;<br>Data Systems</h3>
+        <p>Web apps built with Laravel to manage payments, student data, reports, and daily administrative work.</p>
+      </div>
+      <div class="svc" data-n="03">
+        <h3>Graphic<br>Design</h3>
+        <p>Banners, brochures, certificates, and social media content for schools and small businesses.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 08 CONTACT ===================== -->
+<section class="slide contact" id="contact">
+  <div class="inner">
+    <div>
+      <div class="tag reveal">Contact</div>
+      <h2 class="title reveal">Let's<br>Work <span>Together</span></h2>
+      <div class="loc reveal">Jakarta, Indonesia</div>
+    </div>
+    <!-- GANTI link di bawah dengan data kamu -->
+    <div class="links reveal">
+      <a href="yusufsapojaisipuepa@gmail.com"><div>Email<small>Send a message</small></div><i>↗</i></a>
+      <a href="https://wa.me/62NOMORWA" target="_blank" rel="noopener"><div>WhatsApp<small>Chat directly</small></div><i>↗</i></a>
+      <a href="https://github.com/S4pojai" target="_blank" rel="noopener"><div>GitHub<small>@S4pojai</small></div><i>↗</i></a>
+      <a href="https://www.linkedin.com/in/USERNAME_LINKEDIN" target="_blank" rel="noopener"><div>LinkedIn<small>Connect</small></div><i>↗</i></a>
+      <a href="https://www.instagram.com/USERNAME_IG" target="_blank" rel="noopener"><div>Instagram<small>See my designs</small></div><i>↗</i></a>
+      <a href="https://projects.co.id" target="_blank" rel="noopener"><div>Projects.co.id<small>Hire me</small></div><i>↗</i></a>
+    </div>
+  </div>
+  <footer><span>© 2026 Yusuf Silvianus Sapojai</span><span>Built with HTML · CSS · JS</span></footer>
+</section>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const dots=document.getElementById('dots');
+  const cur=document.getElementById('cur');
+  document.getElementById('total').textContent=String(slides.length).padStart(2,'0');
+
+  slides.forEach((s,i)=>{
+    const a=document.createElement('a');
+    a.href='#'+s.id; a.title=s.id;
+    dots.appendChild(a);
+  });
+  const dotEls=[...dots.children];
+
+  function countUp(el){
+    if(el.dataset.done) return; el.dataset.done=1;
+    const target=+el.dataset.count, sup=el.querySelector('sup');
+    let n=0; const step=Math.max(1,Math.ceil(target/30));
+    const t=setInterval(()=>{
+      n=Math.min(target,n+step);
+      el.firstChild.nodeValue=n;
+      if(n>=target) clearInterval(t);
+    },40);
+  }
+
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('active');
+        const i=slides.indexOf(e.target);
+        cur.textContent=String(i+1).padStart(2,'0');
+        dotEls.forEach((d,j)=>d.classList.toggle('on',j===i));
+        e.target.querySelectorAll('[data-count]').forEach(countUp);
+      }
+    });
+  },{threshold:.45});
+  slides.forEach(s=>io.observe(s));
+
+  // judul cover selalu muat di layar
+  const big=document.querySelector('.cover .big');
+  function fitCover(){
+    big.style.fontSize='';
+    const max=window.innerWidth*0.86;
+    const w=big.scrollWidth;
+    if(w>max){
+      const fs=parseFloat(getComputedStyle(big).fontSize);
+      big.style.fontSize=(fs*max/w)+'px';
+    }
+  }
+  window.addEventListener('resize',fitCover);
+  document.fonts.ready.then(fitCover); fitCover();
+
+  // navigasi keyboard: panah atas/bawah
+  document.addEventListener('keydown',e=>{
+    if(!['ArrowDown','ArrowUp','PageDown','PageUp'].includes(e.key)) return;
+    e.preventDefault();
+    const i=+cur.textContent-1;
+    const next=(e.key==='ArrowDown'||e.key==='PageDown')?Math.min(i+1,slides.length-1):Math.max(i-1,0);
+    slides[next].scrollIntoView({behavior:'smooth'});
+  });
+</script>
+</body>
+</html>
