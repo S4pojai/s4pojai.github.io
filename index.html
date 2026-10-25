@@ -130,8 +130,13 @@
   .svc p{position:relative;color:var(--muted);font-size:14px;line-height:1.7}
 
   /* ---------- 08 contact ---------- */
-  .contact .inner{display:grid;grid-template-columns:1.2fr 1fr;gap:6vw;align-items:center}
-  .contact h2.title{font-size:clamp(54px,9vw,140px)}
+  .contact .inner{display:grid;grid-template-columns:1.25fr 1fr;gap:5vw;align-items:center}
+  .contact h2.title{font-size:clamp(54px,7.5vw,120px)}
+  .contact .links{margin-top:30px}
+  .photo-contact{position:relative;aspect-ratio:4/5;max-height:76vh;justify-self:end;width:100%;max-width:440px;
+    -webkit-mask-image:linear-gradient(to right,transparent 0%,#000 35%),linear-gradient(to top,transparent 0%,#000 25%);
+    -webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent 0%,#000 35%),linear-gradient(to top,transparent 0%,#000 25%);mask-composite:intersect}
+  .photo-contact img{width:100%;height:100%;object-fit:cover;object-position:70% 30%;display:block}
   .contact h2.title span{color:var(--accent)}
   .links{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .links a{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:18px 20px;border:1px solid var(--line);border-radius:6px;background:var(--panel);font-weight:600;font-size:14px;transition:.25s}
@@ -160,6 +165,7 @@
     .proj{grid-template-columns:44px 1fr;gap:14px}
     .proj .go{display:none}
     .links{grid-template-columns:1fr}
+    .photo-contact{order:-1;justify-self:center;max-width:300px}
     footer{position:static;margin-top:50px;flex-direction:column;gap:6px}
     .contact{padding-bottom:30px}
   }
@@ -189,9 +195,9 @@
 <!-- ===================== 02 PROFILE ===================== -->
 <section class="slide profile" id="about">
   <div class="inner">
-    <!-- FOTO: simpan foto kamu dengan nama foto.jpg di folder yang sama dengan file ini -->
+    <!-- FOTO: simpan foto kamu dengan nama foto.png di folder yang sama dengan file ini -->
     <div class="photo reveal" id="photo">
-      <img src="foto.jpg" alt="Yusuf Silvianus Sapojai" onerror="this.parentElement.classList.add('noimg')">
+      <img src="foto.png" alt="Yusuf Silvianus Sapojai" onerror="this.parentElement.classList.add('noimg')">
       <div class="initials">YS</div>
     </div>
     <div>
@@ -356,15 +362,19 @@
       <div class="tag reveal">Contact</div>
       <h2 class="title reveal">Let's<br>Work <span>Together</span></h2>
       <div class="loc reveal">Jakarta, Indonesia</div>
-    </div>
     <!-- GANTI link di bawah dengan data kamu -->
     <div class="links reveal">
-      <a href="yusufsapojaisipuepa@gmail.com"><div>Email<small>Send a message</small></div><i>↗</i></a>
+      <a href="mailto:EMAIL_KAMU@gmail.com"><div>Email<small>Send a message</small></div><i>↗</i></a>
       <a href="https://wa.me/62NOMORWA" target="_blank" rel="noopener"><div>WhatsApp<small>Chat directly</small></div><i>↗</i></a>
       <a href="https://github.com/S4pojai" target="_blank" rel="noopener"><div>GitHub<small>@S4pojai</small></div><i>↗</i></a>
       <a href="https://www.linkedin.com/in/USERNAME_LINKEDIN" target="_blank" rel="noopener"><div>LinkedIn<small>Connect</small></div><i>↗</i></a>
       <a href="https://www.instagram.com/USERNAME_IG" target="_blank" rel="noopener"><div>Instagram<small>See my designs</small></div><i>↗</i></a>
       <a href="https://projects.co.id" target="_blank" rel="noopener"><div>Projects.co.id<small>Hire me</small></div><i>↗</i></a>
+    </div>
+    </div>
+    <!-- FOTO KONTAK: simpan foto dengan nama foto-contact.png di folder yang sama -->
+    <div class="photo-contact reveal">
+      <img src="foto-contact.png" alt="Yusuf Silvianus Sapojai" onerror="this.parentElement.style.display='none'">
     </div>
   </div>
   <footer><span>© 2026 Yusuf Silvianus Sapojai</span><span>Built with HTML · CSS · JS</span></footer>
